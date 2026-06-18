@@ -55,6 +55,20 @@ def index():
 
 @app.route("/data")
 def data():
+    try:
+        with open(ALL_DATA_FILE, "r", encoding="utf-8") as f:
+            all_data_json = f.read()
+
+        with open(AGG_FILE, "r", encoding="utf-8") as f:
+            agg_json = f.read()
+
+        payload = f'{{"records":{all_data_json},"agg":{agg_json}}}'
+        return Response(payload, mimetype="application/json")
+
+    except Exception as e:
+        print("ERROR LOADING DATA:", str(e))
+        return Response('{"error":"Data load failed"}', mimetype="application/json")
+``
     """
     Return pipeline data as JSON.
 
